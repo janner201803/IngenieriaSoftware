@@ -1,0 +1,90 @@
+/* ===== ESTILOS DEL NAVBAR ===== */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+/* Contenedor del logo */
+.navbarLogo {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Lado derecho */
+.navbarRight {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.userRole {
+  font-size: 1rem;
+  color: #2d3748;
+  font-weight: 500;
+  background: #f0f4f8;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  border-color: #999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.6rem 1rem;
+  }
+  
+  .logo {
+    height: 35px;
+  }
+  
+  .userRole {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+  }
+  
+  .avatar {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 480px) {
+  .userRole {
+    display: none;
+  }
+  
+  .logo {
+    height: 30px;
+  }
+}
