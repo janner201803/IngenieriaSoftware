@@ -5,6 +5,11 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import InicioDocente from '../pages/InicioDocente';
 import InicioSecretaria from '../pages/InicioSecretaria';
+import CrearSala from '../pages/crearSala';
+import GSInicio from "../pages/GSInicio";
+import EditarSala from "../pages/EditarSala";
+import AgregarRecurso from '../pages/AgregarRecurso';
+import EditarEstado from "../pages/EditarEstado";
 
 const AppRouter = () => {
   const { user } = useAuth();
@@ -24,6 +29,11 @@ const AppRouter = () => {
           element={user?.rol === 'secretaria' ? <InicioSecretaria /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/inicio/crear" element={<CrearSala/>}/>
+        <Route path="/inicio/GSInicio" element={<GSInicio />} />
+        <Route path="/inicio/editar" element={<EditarSala />} />
+        <Route path="/inicio/agregarRecurso" element={<AgregarRecurso />} />
+        <Route path="/inicio/actualizarEstado" element={<EditarEstado />} />
       </Routes>
     </BrowserRouter>
   );

@@ -4,6 +4,7 @@ const authRoutes = require('./routes/authRoutes');
 const facultadRoutes = require('./routes/facultadRoutes');
 const docenteRoutes = require('./routes/docenteRoutes');
 const secretariaRoutes = require('./routes/secretariaRoutes');
+const salaRoutes = require('./routes/salaRoutes');
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/facultades', facultadRoutes);
 app.use('/api/docentes', docenteRoutes);
 app.use('/api/secretarias', secretariaRoutes);
+app.use('/api/salas', salaRoutes);
 
 // Manejador de errores global (para errores pasados con next)
 app.use((err, req, res, next) => {

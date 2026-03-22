@@ -5,6 +5,7 @@ const Facultad = require('./facultad')(sequelize, DataTypes);
 const Docente = require('./docente')(sequelize, DataTypes);
 const Secretaria = require('./secretaria')(sequelize, DataTypes);
 const ListaBlanca = require('./listaBlanca')(sequelize, DataTypes); // <-- NUEVO
+const Sala = require('./sala')(sequelize, DataTypes);
 
 const db = {
   sequelize,
@@ -12,7 +13,8 @@ const db = {
   Facultad,
   Docente,
   Secretaria,
-  ListaBlanca, // <-- NUEVO
+  ListaBlanca,
+  Sala // <-- NUEVO
 };
 
 Object.keys(db).forEach(modelName => {

@@ -1,24 +1,39 @@
-import React from 'react';
-import { useAuth } from '../context/AuthContext';
-import Navbar from '../components/Navbar';
-// Si tienes estilos específicos para esta página, descomenta la siguiente línea
-// import '../styles/InicioSecretaria.css';
+import '../styles/InicioSecretaria.css'; 
+import gestionarSalas from '../assets/images/salaReuniones.png';
+import gestionarReserva from '../assets/images/calendario.png';
+import agregar from '../assets/images/agregar.png';
+import NavbarGestionSalas from '../components/NavbarGestionSalas';
 
-function InicioSecretaria() {
-  const { user, logout } = useAuth();
-
+const InicioSecretaria = () => {
   return (
-    <div className="inicio-secretaria-container">
-      <Navbar />
-      <div className="inicio-secretaria-content">
-        <h1>Panel de Secretaria</h1>
-        <p>Bienvenida, {user?.nombre || user?.correo} (Rol: {user?.rol})</p>
-        <button onClick={logout} className="logout-btn">
-          Cerrar sesión
-        </button>
+    <div className="secretariaContainer">
+      <NavbarGestionSalas  />
+      
+      <div className="mainContent">
+        <div className="welcomeSection">
+          <h1 className="titulo">Bienvenido(a)</h1>
+          <p className="subtitulo">Al portal de gestión de salas y reservas</p>
+          <div className="linea"></div>
+        </div>
+
+        <div className="gestionarSalasContainer">
+          <div className="gestionar">
+            <p className="gestionarTitle">Gestionar salas</p>
+            <img src={gestionarSalas} alt="Gestionar salas" className="gestionarImage" />
+        </div>
+
+          <div className="gestionar">
+            <p className="gestionarTitle">Gestionar reserva</p>
+            <img src={gestionarReserva} alt="Gestionar reserva" className="gestionarImage" />
+           </div>      
+
+          <div className="agregarButton">
+            <img src={agregar} alt="Agregar" className="agregarIcon" />
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default InicioSecretaria;

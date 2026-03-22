@@ -4,14 +4,14 @@ import avatar from '../assets/images/avatar.png';
 
 function NavbarGestionSalas({ userRole }) {
   return (
-    <nav className="navbar">
-      <div className="navbarLogo">
-        <img src={logo} alt="logo" className="logo" />
+    <nav className="navbarGestion">
+      <div className="navbarLogoGestion">
+        <img src={logo} alt="logo" className="logoGestion" />
       </div>
 
-      <div className="navbarRight">
+      <div className="navbarRightGestion">
         <span className="userRole">{userRole}</span>
-        <img src={avatar} alt="avatar" className="avatar" />
+        <img src={avatar} alt="avatar" className="avatarGestion" />
       </div>
     </nav>
   );

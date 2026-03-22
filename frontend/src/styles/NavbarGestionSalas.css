@@ -1,5 +1,5 @@
 /* ===== ESTILOS DEL NAVBAR ===== */
-.navbar {
+.navbarGestion {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,19 +15,19 @@
 }
 
 /* Contenedor del logo */
-.navbarLogo {
+.navbarLogoGestion {
   display: flex;
   align-items: center;
 }
 
-.logo {
+.logoGestion {
   height: 40px;
   width: auto;
   object-fit: contain;
 }
 
 /* Lado derecho */
-.navbarRight {
+.navbarRightGestion {
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -43,7 +43,7 @@
   border: 1px solid #e2e8f0;
 }
 
-.avatar {
+.avatarGestion {
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -53,7 +53,7 @@
   transition: all 0.2s ease;
 }
 
-.avatar:hover {
+.avatarGestion:hover {
   transform: scale(1.05);
   border-color: #999;
 }
