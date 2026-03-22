@@ -39,7 +39,7 @@ function CrearSala() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id: Number(sala.id),
+          id:(sala.id),
           nombre: sala.nombre,
           ubicacion: sala.ubicacion,
           capacidad: Number(sala.capacidad),
@@ -87,7 +87,7 @@ function CrearSala() {
           <div className="formGroup">
             <label>Codigo Sala</label>
             <input
-              type="number"
+              type="text"
               value={sala.id}
               onChange={(e) => setSala({ ...sala, id: e.target.value })}
             />

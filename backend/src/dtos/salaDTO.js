@@ -12,13 +12,22 @@ class SalaDTO {
   static validarCrear(data) {
     const errors = [];
 
-    if (!data.id) errors.push('El id es obligatorio');
-    if (data.id && isNaN(data.id)) errors.push('El id debe ser numérico');
+    if (!data.id) {
+      errors.push('El id es obligatorio');
+    } else if (typeof data.id !== 'string') {
+      errors.push('El id debe ser texto (varchar)');
+    } else if (data.id.length > 45) {
+      errors.push('El id no puede tener más de 45 caracteres');
+    }
 
     if (!data.nombre) errors.push('El nombre es obligatorio');
     if (!data.ubicacion) errors.push('La ubicación es obligatoria');
-    if (!data.capacidad) errors.push('La capacidad es obligatoria');
-    if (data.capacidad && isNaN(data.capacidad)) errors.push('Capacidad debe ser número');
+
+    if (!data.capacidad) {
+      errors.push('La capacidad es obligatoria');
+    } else if (isNaN(data.capacidad)) {
+      errors.push('Capacidad debe ser número');
+    }
 
     if (!data.estado) errors.push('El estado es obligatorio');
 

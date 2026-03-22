@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Sala = sequelize.define('Sala', {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(45),
       primaryKey: true,
       allowNull: false // 👈 importante
     },

@@ -4,13 +4,25 @@ const SalaDTO = require('../dtos/salaDTO');
 // 🔹 CREAR SALA
 exports.crear = async (req, res, next) => {
   try {
+    // 🔥 Validación DTO
     const errors = SalaDTO.validarCrear(req.body);
     if (errors.length > 0) {
       return res.status(400).json({ errores: errors });
     }
 
+    // 🔥 Validar que el ID no esté repetido
+    const salaExistente = await salaService.obtenerPorId(req.body.id);
+    if (salaExistente) {
+      return res.status(400).json({ 
+        error: 'Ya existe una sala con ese ID' 
+      });
+    }
+
+    // 🔥 Crear sala
     const sala = await salaService.crear(req.body);
+
     res.status(201).json(new SalaDTO(sala));
+
   } catch (error) {
     next(error);
   }
