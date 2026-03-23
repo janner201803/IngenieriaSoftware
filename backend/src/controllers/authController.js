@@ -1,33 +1,48 @@
 const authService = require('../service/authService');
-const { validationResult } = require('express-validator');
+const UsuarioDTO = require('../dtos/usuarioDTO');
 
 exports.register = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errores: errors.array() });
+
+  // 🔥 VALIDAR CON DTO
+  const errors = UsuarioDTO.validarCrear(req.body);
+  if (errors.length > 0) {
+    return res.status(400).json({ errores: errors });
   }
 
   try {
     const nuevoUsuario = await authService.register(req.body);
-    res.status(201).json({ message: 'Usuario registrado exitosamente', usuario: nuevoUsuario });
+
+    res.status(201).json({
+      message: 'Usuario registrado exitosamente',
+      usuario: new UsuarioDTO(nuevoUsuario)
+    });
+
   } catch (error) {
-    if (error.message === 'El correo ya está registrado' || error.message === 'La facultad especificada no existe') {
-      return res.status(409).json({ error: error.message });
-    }
-    next(error); // Pasa el error al manejador global
+    next(error);
   }
 };
 
 exports.login = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errores: errors.array() });
+
+  // 🔥 VALIDAR CON DTO
+  const errors = UsuarioDTO.validarLogin(req.body);
+  if (errors.length > 0) {
+    return res.status(400).json({ errores: errors });
   }
 
   try {
     const { correo, contraseña } = req.body;
+
     const resultado = await authService.login(correo, contraseña);
-    res.json({ message: 'Inicio de sesión exitoso', ...resultado });
+
+    // 🔥 GUARDAR SESIÓN
+    req.session.user = resultado.usuario;
+
+    res.json({
+      message: 'Inicio de sesión exitoso',
+      usuario: new UsuarioDTO(resultado.usuario)
+    });
+
   } catch (error) {
     if (error.message === 'Credenciales inválidas') {
       return res.status(401).json({ error: error.message });

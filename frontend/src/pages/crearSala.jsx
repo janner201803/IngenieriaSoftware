@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import devolver from '../assets/images/devolver.png';
 import { useState, useEffect } from "react";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/crearSala.css";
@@ -172,7 +174,7 @@ function CrearSala() {
 
       {/* FOOTER */}
       <div className="footer">
-        <button className="nextBtn">→</button>
+        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
       </div>
     </div>
   );

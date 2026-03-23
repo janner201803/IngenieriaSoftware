@@ -1,44 +1,36 @@
+import { Link } from "react-router-dom";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/AgregarRecurso.css";
+import devolver from '../assets/images/devolver.png';
 
 function AgregarRecurso() {
   return (
-    <div className="containerRecurso">
+    <div className="container">
       <NavbarGestionSalas />
 
       {/* CONTENIDO */}
-      <div className="contentRecurso">
+      <div className="content">
 
         {/* IZQUIERDA */}
-        <div className="formSectionRecurso">
-            <h1 className="agregarTituloRecurso">Recurso</h1>
+        <div className="formSection">
+          <h1>Recursos</h1>
         </div>
 
-        {/* DERECHA (VACÍO) */}
-        <div className="listSectionRecurso">
-          <div className="emptyStateRecurso">
-            <p>Aquí se mostrarán las salas creadas</p>
-          </div>
+        {/* DERECHA */}
+        <div className="listSection">
+
         </div>
 
       </div>
 
-        <div className="footerAgregar">
-
-            <div className="footerLeftAgregar">
-                <button className="agregarBtn">Agregar</button>
-                <button className="eliminarBtn">Eliminar</button>
-            </div>
-
-            <div className="footerCenter"></div>
-
-            <div className="footerRightAgregar">
-                <button className="nextBtn">→</button>
-            </div>
-
-        </div>
+      {/* FOOTER */}
+      <div className="footer">
+        <button className="AgregarBtn">Agregar</button>
+        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
+      </div>
     </div>
   );
 }
+
 
 export default AgregarRecurso;

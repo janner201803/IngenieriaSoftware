@@ -2,8 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session'); // <-- Importar
 const facultadRoutes = require('./routes/facultadRoutes');
-const docenteRoutes = require('./routes/docenteRoutes');
-const secretariaRoutes = require('./routes/secretariaRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
@@ -31,8 +29,6 @@ app.use(session({
 // Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/facultades', facultadRoutes);
-app.use('/api/docentes', docenteRoutes);
-app.use('/api/secretarias', secretariaRoutes);
 
 // Manejador de errores
 app.use((err, req, res, next) => {

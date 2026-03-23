@@ -20,8 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Facultad.associate = (models) => {
-    Facultad.hasMany(models.Docente, { foreignKey: 'idFacultad', as: 'docentes' });
-    Facultad.hasMany(models.Secretaria, { foreignKey: 'idFacultad', as: 'secretarias' });
+    Facultad.hasMany(models.Usuario, {
+      foreignKey: 'idFacultad',
+      as: 'usuarios'
+    });
   };
 
   return Facultad;

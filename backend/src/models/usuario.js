@@ -1,10 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
-  const Docente = sequelize.define('Docente', {
+  const Usuario = sequelize.define('Usuario', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
-      field: 'id'
+      autoIncrement: true
     },
     correo: {
       type: DataTypes.STRING(50),
@@ -14,22 +13,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     contraseña: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      field: 'contraseña'
+      allowNull: false
+    },
+    rol: {
+      type: DataTypes.STRING(20),
+      allowNull: false
     },
     idFacultad: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      field: 'idFacultad'
+      allowNull: false
     }
   }, {
-    tableName: 'docente',
+    tableName: 'usuario',
     timestamps: false
   });
 
-  Docente.associate = (models) => {
-    Docente.belongsTo(models.Facultad, { foreignKey: 'idFacultad', as: 'facultad' });
+  Usuario.associate = (models) => {
+    Usuario.belongsTo(models.Facultad, {
+      foreignKey: 'idFacultad',
+      as: 'facultad'
+    });
   };
 
-  return Docente;
-  };
+  return Usuario;
+};

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import devolver from '../assets/images/devolver.png';
 import { useEffect, useState } from "react";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/EditarEstado.css";
@@ -109,8 +111,9 @@ function EditarEstado() {
 
       </div>
 
+      {/* FOOTER */}
       <div className="footer">
-        <button className="nextBtn">→</button>
+        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
       </div>
     </div>
   );

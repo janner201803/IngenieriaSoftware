@@ -7,10 +7,15 @@
   padding: 15px 40px;
 }
 
-.logo {
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
+.navbarlogoInicio {
+  display: flex;
+  align-items: center;
+}
+
+.logoInicio {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
 }
 
 .nav-links {

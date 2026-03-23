@@ -10,6 +10,7 @@ import GSInicio from "../pages/GSInicio";
 import EditarSala from "../pages/EditarSala";
 import AgregarRecurso from '../pages/AgregarRecurso';
 import EditarEstado from "../pages/EditarEstado";
+import EliminarRecurso from '../pages/EliminarRecurso';
 
 const AppRouter = () => {
   const { user } = useAuth();
@@ -32,8 +33,9 @@ const AppRouter = () => {
         <Route path="/inicio/crear" element={<CrearSala/>}/>
         <Route path="/inicio/GSInicio" element={<GSInicio />} />
         <Route path="/inicio/editar" element={<EditarSala />} />
-        <Route path="/inicio/agregarRecurso" element={<AgregarRecurso />} />
+        <Route path="/inicio/AgregarRecurso" element={<AgregarRecurso />} />
         <Route path="/inicio/actualizarEstado" element={<EditarEstado />} />
+        <Route path="/inicio/EliminarRecurso" element={<EliminarRecurso />} />
       </Routes>
     </BrowserRouter>
   );

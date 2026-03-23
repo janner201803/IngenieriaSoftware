@@ -2,19 +2,17 @@ const sequelize = require('../config/database');
 const { DataTypes } = require('sequelize');
 
 const Facultad = require('./facultad')(sequelize, DataTypes);
-const Docente = require('./docente')(sequelize, DataTypes);
-const Secretaria = require('./secretaria')(sequelize, DataTypes);
-const ListaBlanca = require('./listaBlanca')(sequelize, DataTypes); // <-- NUEVO
+const Usuario = require('./usuario')(sequelize, DataTypes); // 👈 NUEVO
+const ListaBlanca = require('./listaBlanca')(sequelize, DataTypes);
 const Sala = require('./sala')(sequelize, DataTypes);
 
 const db = {
   sequelize,
   Sequelize: require('sequelize'),
   Facultad,
-  Docente,
-  Secretaria,
+  Usuario,
   ListaBlanca,
-  Sala // <-- NUEVO
+  Sala
 };
 
 Object.keys(db).forEach(modelName => {

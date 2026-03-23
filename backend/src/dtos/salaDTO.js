@@ -8,16 +8,11 @@ class SalaDTO {
     this.estado = estado;
   }
 
-  // 🔥 VALIDACIÓN PARA CREAR
   static validarCrear(data) {
     const errors = [];
 
     if (!data.id) {
       errors.push('El id es obligatorio');
-    } else if (typeof data.id !== 'string') {
-      errors.push('El id debe ser texto (varchar)');
-    } else if (data.id.length > 45) {
-      errors.push('El id no puede tener más de 45 caracteres');
     }
 
     if (!data.nombre) errors.push('El nombre es obligatorio');
@@ -34,7 +29,6 @@ class SalaDTO {
     return errors;
   }
 
-  // 🔥 VALIDACIÓN PARA ACTUALIZAR
   static validarActualizar(data) {
     const errors = [];
 
@@ -48,6 +42,8 @@ class SalaDTO {
 
     return errors;
   }
+
+  
 }
 
 module.exports = SalaDTO;

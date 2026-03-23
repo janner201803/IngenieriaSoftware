@@ -3,13 +3,6 @@ const { Sala } = require('../models');
 class SalaService {
 
   async crear(data) {
-
-    // 🔥 evitar IDs repetidos
-    const existe = await Sala.findByPk(data.id);
-    if (existe) {
-      throw new Error('Ya existe una sala con ese ID');
-    }
-
     return await Sala.create(data);
   }
 

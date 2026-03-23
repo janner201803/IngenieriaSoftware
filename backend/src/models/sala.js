@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.STRING(45),
       primaryKey: true,
-      allowNull: false // 👈 importante
+      allowNull: false
     },
     nombre: {
       type: DataTypes.STRING(60),

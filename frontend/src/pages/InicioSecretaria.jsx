@@ -3,6 +3,7 @@ import gestionarSalas from '../assets/images/salaReuniones.png';
 import gestionarReserva from '../assets/images/calendario.png';
 import agregar from '../assets/images/agregar.png';
 import NavbarGestionSalas from '../components/NavbarGestionSalas';
+import { Link } from "react-router-dom";
 
 const InicioSecretaria = () => {
   return (
@@ -19,12 +20,12 @@ const InicioSecretaria = () => {
         <div className="gestionarSalasContainer">
           <div className="gestionar">
             <p className="gestionarTitle">Gestionar salas</p>
-            <img src={gestionarSalas} alt="Gestionar salas" className="gestionarImage" />
+            <Link to="/inicio/GSInicio"> <img src={gestionarSalas} alt="Gestionar salas" className="gestionarImage" /></Link>
         </div>
 
           <div className="gestionar">
-            <p className="gestionarTitle">Gestionar reserva</p>
-            <img src={gestionarReserva} alt="Gestionar reserva" className="gestionarImage" />
+            <p className="gestionarTitle">Gestionar reservas</p>
+            <Link to="/inicio/GestionarReservas"> <img src={gestionarReserva} alt="Gestionar reserva" className="gestionarImage" /></Link>
            </div>      
 
           <div className="agregarButton">

@@ -18,7 +18,7 @@ function InicioDocente() {
         <div className="gestionarReservasContainer">
           <div className="gestionar">
             <p className="reservaTitle">Gestionar reservas</p>
-            <img src={gestionarReserva} alt="Gestionar reservas" className="gestionarImage" />
+            <Link to="/inicio/GestionarReservas"> <img src={gestionarReserva} alt="Gestionar reserva" className="gestionarImage" /></Link>
           </div>
 
           <div className="agregarButton">

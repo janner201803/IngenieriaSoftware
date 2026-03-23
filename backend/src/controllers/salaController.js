@@ -1,26 +1,24 @@
 const salaService = require('../service/salaService');
 const SalaDTO = require('../dtos/salaDTO');
+const { Sala } = require('../models');
 
-// 🔹 CREAR SALA
+// 🔹 CREAR
 exports.crear = async (req, res, next) => {
   try {
-    // 🔥 Validación DTO
     const errors = SalaDTO.validarCrear(req.body);
     if (errors.length > 0) {
       return res.status(400).json({ errores: errors });
     }
 
-    // 🔥 Validar que el ID no esté repetido
-    const salaExistente = await salaService.obtenerPorId(req.body.id);
+    // ✅ validar existencia correctamente
+    const salaExistente = await Sala.findByPk(req.body.id);
     if (salaExistente) {
-      return res.status(400).json({ 
-        error: 'Ya existe una sala con ese ID' 
+      return res.status(400).json({
+        error: 'Ya existe una sala con ese ID'
       });
     }
 
-    // 🔥 Crear sala
     const sala = await salaService.crear(req.body);
-
     res.status(201).json(new SalaDTO(sala));
 
   } catch (error) {
@@ -28,7 +26,7 @@ exports.crear = async (req, res, next) => {
   }
 };
 
-// 🔹 LISTAR SALAS
+// 🔹 LISTAR
 exports.listar = async (req, res, next) => {
   try {
     const salas = await salaService.listar();
@@ -48,7 +46,7 @@ exports.obtenerPorId = async (req, res, next) => {
   }
 };
 
-// 🔹 ACTUALIZAR (SOLO ESTADO)
+// 🔹 ACTUALIZAR
 exports.actualizar = async (req, res, next) => {
   try {
     const errors = SalaDTO.validarActualizar(req.body);
@@ -57,7 +55,35 @@ exports.actualizar = async (req, res, next) => {
     }
 
     const sala = await salaService.actualizar(req.params.id, req.body);
-    res.json(new SalaDTO(sala.toJSON()));
+    res.json(new SalaDTO(sala));
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 🔹 ACTUALIZAR DATOS (SIN ESTADO)
+exports.actualizarDatos = async (req, res, next) => {
+  try {
+    const { nombre, ubicacion, capacidad } = req.body;
+
+    // 🔥 validar campos permitidos
+    if (!nombre && !ubicacion && !capacidad) {
+      return res.status(400).json({
+        error: "Debes enviar al menos un campo: nombre, ubicacion o capacidad"
+      });
+    }
+
+    const sala = await salaService.obtenerPorId(req.params.id);
+
+    // 🔥 solo actualizar esos campos
+    await sala.update({
+      nombre: nombre ?? sala.nombre,
+      ubicacion: ubicacion ?? sala.ubicacion,
+      capacidad: capacidad ?? sala.capacidad
+    });
+
+    res.json(new SalaDTO(sala));
+
   } catch (error) {
     next(error);
   }
