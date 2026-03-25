@@ -46,7 +46,7 @@ exports.obtenerPorId = async (req, res, next) => {
   }
 };
 
-// 🔹 ACTUALIZAR
+// 🔹 ACTUALIZAR (GENERAL)
 exports.actualizar = async (req, res, next) => {
   try {
     const errors = SalaDTO.validarActualizar(req.body);
@@ -64,14 +64,13 @@ exports.actualizar = async (req, res, next) => {
 // 🔹 ACTUALIZAR DATOS (SIN ESTADO)
 exports.actualizarDatos = async (req, res, next) => {
   try {
-    const { nombre, ubicacion, capacidad } = req.body;
-
-    // 🔥 validar campos permitidos
-    if (!nombre && !ubicacion && !capacidad) {
-      return res.status(400).json({
-        error: "Debes enviar al menos un campo: nombre, ubicacion o capacidad"
-      });
+    // ✅ VALIDACIÓN NUEVA
+    const errors = SalaDTO.validarActualizarDatos(req.body);
+    if (errors.length > 0) {
+      return res.status(400).json({ errores: errors });
     }
+
+    const { nombre, ubicacion, capacidad } = req.body;
 
     const sala = await salaService.obtenerPorId(req.params.id);
 

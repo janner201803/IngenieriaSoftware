@@ -43,6 +43,40 @@ class SalaDTO {
     return errors;
   }
 
+  static validarActualizarDatos(data) {
+  const errors = [];
+
+  if (!data || Object.keys(data).length === 0) {
+    errors.push('Debe enviar al menos un campo');
+    return errors;
+  }
+
+  // 🔹 nombre
+  if (data.nombre !== undefined) {
+    if (typeof data.nombre !== 'string' || data.nombre.trim() === '') {
+      errors.push('El nombre no puede estar vacío');
+    }
+  }
+
+  // 🔹 ubicacion
+  if (data.ubicacion !== undefined) {
+    if (typeof data.ubicacion !== 'string' || data.ubicacion.trim() === '') {
+      errors.push('La ubicación no puede estar vacía');
+    }
+  }
+
+  // 🔹 capacidad
+  if (data.capacidad !== undefined) {
+    if (isNaN(data.capacidad)) {
+      errors.push('La capacidad debe ser número');
+    } else if (data.capacidad <= 0) {
+      errors.push('La capacidad debe ser mayor a 0');
+    }
+  }
+
+  return errors;
+}
+
   
 }
 
