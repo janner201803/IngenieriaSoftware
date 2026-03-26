@@ -30,11 +30,22 @@ function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        const result = await register(correo, contraseña, parseInt(idFacultad));
-        if (result.success) {
-        navigate('/login');
-        } else {
-        setError(result.error);
+
+        try {
+            const result = await register(
+            correo,
+            contraseña,
+            parseInt(idFacultad)
+            );
+
+            if (result && result.user) {
+            navigate('/login');
+            } else {
+            setError('Error en registro');
+            }
+
+        } catch (err) {
+            setError(err.message);
         }
     };
 

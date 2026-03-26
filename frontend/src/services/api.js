@@ -1,54 +1,82 @@
-// src/services/api.js
+import axios from 'axios';
+
+// 🔥 BASE URL
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
 
-/**
- * Obtener la lista de todas las facultades (sin paginación)
- * @returns {Promise<Array>} Lista de facultades
- */
-export const getFacultades = async () => {
-  const res = await fetch(`${API_URL}/facultades/todas`);
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || 'Error al obtener facultades');
+// 🔥 INSTANCIA AXIOS (CLAVE PARA SESIÓN)
+const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true, // 🔥 ESTO MANTIENE LA SESIÓN
+  headers: {
+    'Content-Type': 'application/json'
   }
-  return res.json();
-};
+});
 
-/**
- * Iniciar sesión
- * @param {string} correo
- * @param {string} contraseña
- * @returns {Promise<Object>} Datos del usuario y mensaje
- */
+// 🔹 LOGIN
 export const login = async (correo, contraseña) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ correo, contraseña }),
-  });
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || 'Error en el login');
+  try {
+    const res = await api.post('/auth/login', {
+      correo,
+      contraseña
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Error en login'
+    );
   }
-  return res.json();
 };
 
-/**
- * Registrar un nuevo usuario (docente o secretaria según lista blanca)
- * @param {string} correo
- * @param {string} contraseña
- * @param {number} idFacultad
- * @returns {Promise<Object>} Datos del usuario creado
- */
+// 🔹 REGISTER
 export const register = async (correo, contraseña, idFacultad) => {
-  const res = await fetch(`${API_URL}/auth/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ correo, contraseña, idFacultad }),
-  });
-  if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.error || 'Error en el registro');
+  try {
+    const res = await api.post('/auth/register', {
+      correo,
+      contraseña,
+      idFacultad
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Error en registro'
+    );
   }
-  return res.json();
 };
+
+// 🔹 VALIDAR SESIÓN (🔥 CORREGIDO)
+export const getSession = async () => {
+  try {
+    const res = await api.get('/auth/session'); // 🔥 IMPORTANTE
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'No autenticado'
+    );
+  }
+};
+
+// 🔹 LOGOUT
+export const logout = async () => {
+  try {
+    const res = await api.post('/auth/logout');
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Error al cerrar sesión'
+    );
+  }
+};
+
+// 🔹 FACULTADES
+export const getFacultades = async () => {
+  try {
+    const res = await api.get('/facultades/todas');
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || 'Error al obtener facultades'
+    );
+  }
+};
+
+export default api;

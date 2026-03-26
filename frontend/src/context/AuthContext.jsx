@@ -1,48 +1,94 @@
-import React, { createContext, useState, useContext } from 'react';
-import { login as apiLogin, register as apiRegister } from '../services/api';
+import { createContext, useContext, useState, useEffect } from 'react';
+import * as api from '../services/api';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // 🔹 VERIFICAR SESIÓN AL RECARGAR
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const data = await api.getSession(); // 🔥 endpoint /auth/session
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        setUser(null);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  // 🔹 LOGIN
   const login = async (correo, contraseña) => {
     setLoading(true);
     try {
-      const data = await apiLogin(correo, contraseña);
-      setUser(data.usuario);
-      localStorage.setItem('user', JSON.stringify(data.usuario));
-      return { success: true, user: data.usuario };
+      const data = await api.login(correo, contraseña);
+
+      // 🔥 guardar usuario en estado
+      setUser(data.user);
+
+      return { success: true, user: data.user };
+
     } catch (error) {
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Error al iniciar sesión'
+      };
     } finally {
       setLoading(false);
     }
   };
 
+  // 🔹 REGISTER
   const register = async (correo, contraseña, idFacultad) => {
     setLoading(true);
     try {
-      const data = await apiRegister(correo, contraseña, idFacultad);
-      return { success: true, data };
+      const data = await api.register(correo, contraseña, idFacultad);
+
+      return { success: true, user: data.user };
+
     } catch (error) {
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Error al registrar'
+      };
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
+  // 🔹 LOGOUT
+  const logout = async () => {
+    try {
+      await api.logout(); // 🔥 endpoint /auth/logout
+      setUser(null);
+    } catch (error) {
+      console.error('Error cerrando sesión', error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        loading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
+// 🔹 Hook personalizado
 export const useAuth = () => useContext(AuthContext);

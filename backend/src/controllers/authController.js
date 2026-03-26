@@ -1,52 +1,70 @@
 const authService = require('../service/authService');
 const UsuarioDTO = require('../dtos/usuarioDTO');
 
-exports.register = async (req, res, next) => {
+class AuthController {
 
-  // 🔥 VALIDAR CON DTO
-  const errors = UsuarioDTO.validarCrear(req.body);
-  if (errors.length > 0) {
-    return res.status(400).json({ errores: errors });
+  // 🔹 LOGIN
+  async login(req, res, next) {
+    try {
+      const { correo, contraseña } = req.body;
+
+      const result = await authService.login(correo, contraseña);
+
+      // 🔥 GUARDAR EN SESIÓN
+      req.session.user = result.usuario;
+
+      res.json({
+        message: 'Login exitoso',
+        user: new UsuarioDTO(result.usuario)
+      });
+
+    } catch (error) {
+      next(error);
+    }
   }
 
-  try {
-    const nuevoUsuario = await authService.register(req.body);
+  // 🔹 REGISTER
+  async register(req, res, next) {
+    try {
+      const { correo, contraseña, idFacultad } = req.body;
 
-    res.status(201).json({
-      message: 'Usuario registrado exitosamente',
-      usuario: new UsuarioDTO(nuevoUsuario)
-    });
+      const usuario = await authService.register({
+        correo,
+        contraseña,
+        idFacultad
+      });
 
-  } catch (error) {
-    next(error);
+      res.status(201).json({
+        message: 'Usuario registrado',
+        user: new UsuarioDTO(usuario)
+      });
+
+    } catch (error) {
+      next(error);
+    }
   }
-};
 
-exports.login = async (req, res, next) => {
-
-  // 🔥 VALIDAR CON DTO
-  const errors = UsuarioDTO.validarLogin(req.body);
-  if (errors.length > 0) {
-    return res.status(400).json({ errores: errors });
+  // 🔹 LOGOUT (🔥 IMPORTANTE)
+  async logout(req, res, next) {
+    try {
+      req.session.destroy(() => {
+        res.json({ message: 'Sesión cerrada' });
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  try {
-    const { correo, contraseña } = req.body;
-
-    const resultado = await authService.login(correo, contraseña);
-
-    // 🔥 GUARDAR SESIÓN
-    req.session.user = resultado.usuario;
+  // 🔹 OBTENER USUARIO LOGUEADO (🔥 CLAVE PARA FRONT)
+  async me(req, res) {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'No autenticado' });
+    }
 
     res.json({
-      message: 'Inicio de sesión exitoso',
-      usuario: new UsuarioDTO(resultado.usuario)
+      user: req.session.user
     });
-
-  } catch (error) {
-    if (error.message === 'Credenciales inválidas') {
-      return res.status(401).json({ error: error.message });
-    }
-    next(error);
   }
-};
+}
+
+module.exports = new AuthController();

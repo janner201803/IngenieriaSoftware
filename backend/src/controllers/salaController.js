@@ -10,7 +10,7 @@ exports.crear = async (req, res, next) => {
       return res.status(400).json({ errores: errors });
     }
 
-    // ✅ validar existencia correctamente
+    // 🔥 validar si ya existe (solo si envías id manual)
     const salaExistente = await Sala.findByPk(req.body.id);
     if (salaExistente) {
       return res.status(400).json({
@@ -40,13 +40,18 @@ exports.listar = async (req, res, next) => {
 exports.obtenerPorId = async (req, res, next) => {
   try {
     const sala = await salaService.obtenerPorId(req.params.id);
+
+    if (!sala) {
+      return res.status(404).json({ error: 'Sala no encontrada' });
+    }
+
     res.json(new SalaDTO(sala));
   } catch (error) {
     next(error);
   }
 };
 
-// 🔹 ACTUALIZAR (GENERAL)
+// 🔹 ACTUALIZAR (SOLO ESTADO)
 exports.actualizar = async (req, res, next) => {
   try {
     const errors = SalaDTO.validarActualizar(req.body);
@@ -54,8 +59,19 @@ exports.actualizar = async (req, res, next) => {
       return res.status(400).json({ errores: errors });
     }
 
-    const sala = await salaService.actualizar(req.params.id, req.body);
+    const sala = await salaService.obtenerPorId(req.params.id);
+
+    if (!sala) {
+      return res.status(404).json({ error: 'Sala no encontrada' });
+    }
+
+    // 🔥 SOLO actualizar estado
+    await sala.update({
+      estado: req.body.estado ?? sala.estado
+    });
+
     res.json(new SalaDTO(sala));
+
   } catch (error) {
     next(error);
   }
@@ -64,7 +80,6 @@ exports.actualizar = async (req, res, next) => {
 // 🔹 ACTUALIZAR DATOS (SIN ESTADO)
 exports.actualizarDatos = async (req, res, next) => {
   try {
-    // ✅ VALIDACIÓN NUEVA
     const errors = SalaDTO.validarActualizarDatos(req.body);
     if (errors.length > 0) {
       return res.status(400).json({ errores: errors });
@@ -73,6 +88,10 @@ exports.actualizarDatos = async (req, res, next) => {
     const { nombre, ubicacion, capacidad } = req.body;
 
     const sala = await salaService.obtenerPorId(req.params.id);
+
+    if (!sala) {
+      return res.status(404).json({ error: 'Sala no encontrada' });
+    }
 
     // 🔥 solo actualizar esos campos
     await sala.update({
@@ -91,8 +110,16 @@ exports.actualizarDatos = async (req, res, next) => {
 // 🔹 ELIMINAR
 exports.eliminar = async (req, res, next) => {
   try {
-    const resultado = await salaService.eliminar(req.params.id);
-    res.json(resultado);
+    const sala = await salaService.obtenerPorId(req.params.id);
+
+    if (!sala) {
+      return res.status(404).json({ error: 'Sala no encontrada' });
+    }
+
+    await salaService.eliminar(req.params.id);
+
+    res.json({ mensaje: 'Sala eliminada correctamente' });
+
   } catch (error) {
     next(error);
   }

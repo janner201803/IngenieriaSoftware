@@ -15,16 +15,29 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        const result = await login(correo, contraseña);
-        if (result.success) {
-        if (result.user.rol === 'docente') navigate('/docente');
-        else if (result.user.rol === 'secretaria') navigate('/secretaria');
-        else navigate('/');
-        } else {
-        setError(result.error);
+
+        try {
+            const result = await login(correo, contraseña);
+
+            // 🔥 VALIDAR RESPUESTA
+            if (result && result.user) {
+
+            if (result.user.rol === 'docente') {
+                navigate('/docente');
+            } else if (result.user.rol === 'secretaria') {
+                navigate('/secretaria');
+            } else {
+                navigate('/');
+            }
+
+            } else {
+            setError('Error en login');
+            }
+
+        } catch (err) {
+            setError(err.message);
         }
     };
-
   return (
     <div>
         <div className="loginContainer">

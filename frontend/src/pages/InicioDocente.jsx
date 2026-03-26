@@ -2,6 +2,7 @@ import '../styles/InicioDocente.css';
 import gestionarReserva from '../assets/images/calendario.png';
 import agregar from '../assets/images/agregar.png';
 import NavbarGestionSalas from '../components/NavbarGestionSalas';
+import { Link } from 'react-router-dom'; // 👈 ESTA LÍNEA FALTABA
 
 function InicioDocente() {
   return (
@@ -18,7 +19,9 @@ function InicioDocente() {
         <div className="gestionarReservasContainer">
           <div className="gestionar">
             <p className="reservaTitle">Gestionar reservas</p>
-            <Link to="/inicio/GestionarReservas"> <img src={gestionarReserva} alt="Gestionar reserva" className="gestionarImage" /></Link>
+            <Link to="/inicio/GestionarReservas">
+              <img src={gestionarReserva} alt="Gestionar reserva" className="gestionarImage" />
+            </Link>
           </div>
 
           <div className="agregarButton">

@@ -2,9 +2,10 @@ const sequelize = require('../config/database');
 const { DataTypes } = require('sequelize');
 
 const Facultad = require('./facultad')(sequelize, DataTypes);
-const Usuario = require('./usuario')(sequelize, DataTypes); // 👈 NUEVO
+const Usuario = require('./usuario')(sequelize, DataTypes);
 const ListaBlanca = require('./listaBlanca')(sequelize, DataTypes);
 const Sala = require('./sala')(sequelize, DataTypes);
+const Reserva = require('./reserva')(sequelize, DataTypes); // 👈 NUEVO
 
 const db = {
   sequelize,
@@ -12,7 +13,8 @@ const db = {
   Facultad,
   Usuario,
   ListaBlanca,
-  Sala
+  Sala,
+  Reserva // 👈 NUEVO
 };
 
 Object.keys(db).forEach(modelName => {

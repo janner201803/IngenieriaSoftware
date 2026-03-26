@@ -1,10 +1,15 @@
 const { createProxyMiddleware } = require('http-proxy-middleware');
+
 module.exports = function(app) {
   app.use(
     '/api',
     createProxyMiddleware({
-      target: 'http://localhost:3001', // URL de tu backend
+      target: 'http://localhost:3001',
       changeOrigin: true,
+      secure: false,
+
+      // 🔥 IMPORTANTE PARA COOKIES / SESIÓN
+      cookieDomainRewrite: 'localhost'
     })
   );
 };

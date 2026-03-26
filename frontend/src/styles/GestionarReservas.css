@@ -1,0 +1,397 @@
+/* GestionarReservas.css */
+.grContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.grContent {
+  margin-top: 80px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+/* Layout de tres columnas */
+.threeColumnLayout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+/* Columna izquierda - Fecha seleccionada */
+.leftColumnSelected {
+  flex: 0 0 260px;
+}
+
+.selectedDateCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.selectedDateTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.selectedDateContent {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.selectedDateDay {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.selectedDateDay .dayNumberLarge {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.selectedDateDetails {
+  flex: 1;
+}
+
+.selectedDateFull {
+  font-size: 0.85rem;
+  color: #475569;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+  text-transform: capitalize;
+}
+
+.selectedDateStatus {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.noDateSelected {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.noDateSelected p {
+  margin: 0.25rem 0;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.hintText {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Columna central - Calendario pequeño */
+.centerColumn {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.calendarContainerSmall {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.calendarHeaderSmall {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.calendarHeaderSmall h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.monthNavBtnSmall {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  color: #64748b;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.monthNavBtnSmall:hover {
+  color: #3b82f6;
+  background-color: #f1f5f9;
+}
+
+.calendarWeekDaysSmall {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.5rem;
+}
+
+.weekDaySmall {
+  text-align: center;
+  font-weight: 500;
+  color: #64748b;
+  font-size: 0.7rem;
+  padding: 0.5rem;
+}
+
+.calendarDaysSmall {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+}
+
+.calendarDaySmall {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: default;
+  transition: all 0.2s;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+}
+
+.calendarDaySmall.clickableSmall {
+  cursor: pointer;
+}
+
+.calendarDaySmall.clickableSmall:hover {
+  background-color: #f1f5f9;
+  border-color: #3b82f6;
+}
+
+.calendarDaySmall.selectedSmall {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.calendarDaySmall.selectedSmall .dayNumberSmall {
+  color: white;
+}
+
+.calendarDaySmall.otherMonthSmall {
+  opacity: 0.3;
+  background-color: #fafbfc;
+}
+
+.dayNumberSmall {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+/* Columna derecha - Botones verticales y leyenda */
+.rightColumn {
+  flex: 0 0 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.buttonsVertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.reservaBtnVertical {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.reservaBtnVertical:hover {
+  transform: scale(1.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.crearBtn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.crearBtn:hover {
+  background-color: #2563eb;
+}
+
+.ajustarBtn {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.ajustarBtn:hover {
+  background-color: #d97706;
+}
+
+.cancelarBtn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.cancelarBtn:hover {
+  background-color: #dc2626;
+}
+
+/* Leyenda de estados */
+.legendContainer {
+  background: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.legendTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.75rem 0;
+}
+
+.legendItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.legendColor {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.legendColor.disponible {
+  background-color: #10b981;
+}
+
+.legendColor.ocupado {
+  background-color: #ef4444;
+}
+
+.legendColor.inhabilitado {
+  background-color: #6b7280;
+}
+
+/* FOOTER */
+.footergr {
+  background: #ffffff;
+  box-shadow: 0 -4px 20px rgba(76, 0, 255, 0.1);
+  height: 70px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: auto;
+}
+
+.devolvergr {
+  width: 36px;
+  height: auto;
+  margin-right: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.devolvergr:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .threeColumnLayout {
+    gap: 1rem;
+  }
+  
+  .leftColumnSelected {
+    flex: 0 0 220px;
+  }
+  
+  .rightColumn {
+    flex: 0 0 160px;
+  }
+  
+  .calendarContainerSmall {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .threeColumnLayout {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .leftColumnSelected {
+    flex: 1;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .rightColumn {
+    flex: 1;
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .calendarContainerSmall {
+    max-width: 100%;
+  }
+}
