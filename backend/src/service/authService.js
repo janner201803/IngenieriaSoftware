@@ -22,10 +22,18 @@ class AuthService {
       correo,
       contraseña,
       rol,
-      idFacultad
+      idFacultad // ✅ consistente
     });
 
-    const usuarioResponse = nuevoUsuario.toJSON();
+    // 🔥 incluir facultad
+    const usuarioConFacultad = await Usuario.findByPk(nuevoUsuario.id, {
+      include: {
+        model: Facultad,
+        attributes: ['id', 'nombre']
+      }
+    });
+
+    const usuarioResponse = usuarioConFacultad.toJSON();
     delete usuarioResponse.contraseña;
 
     return usuarioResponse;
@@ -33,7 +41,13 @@ class AuthService {
 
   async login(correo, contraseña) {
 
-    const usuario = await Usuario.findOne({ where: { correo } });
+    const usuario = await Usuario.findOne({
+      where: { correo },
+      include: {
+        model: Facultad,
+        attributes: ['id', 'nombre']
+      }
+    });
 
     if (!usuario) {
       throw new Error('Credenciales inválidas');

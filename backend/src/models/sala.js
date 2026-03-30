@@ -20,7 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     estado: {
       type: DataTypes.STRING(20),
       allowNull: false
+    },
+    facultad_id: { // ✅ IGUAL QUE BD
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
+
   }, {
     tableName: 'sala',
     timestamps: false

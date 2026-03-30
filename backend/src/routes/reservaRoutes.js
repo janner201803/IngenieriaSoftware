@@ -24,6 +24,8 @@ router.get('/:id',
   reservaController.obtenerPorId
 );
 
+router.get('/', reservaController.listarPorFecha); // este va antes de listarTodas si lo haces por query
+
 // 🔹 ACTUALIZAR
 router.put('/:id',
   param('id').isInt(),

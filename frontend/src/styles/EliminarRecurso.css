@@ -3,9 +3,12 @@
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   min-height: 100vh;
-  padding-top: 85px; /* 👈 espacio para navbar fijo */
-  overflow: hidden;
+  padding-top: 85px;
   box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
 }
 
 /* CONTENIDO PRINCIPAL */
@@ -26,32 +29,6 @@
   padding: 35px 45px;
 }
 
-/* FOOTER */
-.footer{
-  background-color: #e30613;
-  width: 1202px;
-  margin-left: 61px;
-  height: 90px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-/* BOTÓN DEVOLVER (imagen) */
-.devolver {
-  width: 40px;  
-  height: auto;
-  margin-right: 20px;
-  margin-top: 10px;
-}
-
-/* BOTÓN DEVOLVER (imagen) */
-.devolver {
-  width: 40px;  
-  height: auto;
-  margin-right: 20px;
-}
-
 .EliminarBtn{
     background: white;
     border: none;
@@ -60,10 +37,9 @@
     cursor: pointer;
     border-radius: 5px;
     transition: 0.2s;
-    margin-right: 1000px;
-
+    margin-right: 80%; /* espacio entre botones */
 }
 
-.EliminarBtn:hover {
-  background: #f0f0f0;
+.AgregarBtn:last-child {
+    margin-right: 0; /* elimina margen del último */
 }

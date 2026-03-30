@@ -1,11 +1,14 @@
-import { Link } from "react-router-dom";
-import devolver from '../assets/images/devolver.png';
 import { useState, useEffect } from "react";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/EditarSala.css";
+import { getFacultades } from '../services/api'; // 🔥 agregado
+import FooterRojo from "../components/FooterRojo";
 
 function EditarSala() {
   const [salas, setSalas] = useState([]);
+  const [facultades, setFacultades] = useState([]); // 🔥 nuevo
+  const [idFacultad, setIdFacultad] = useState(""); // 🔥 nuevo
+
   const [salaSeleccionada, setSalaSeleccionada] = useState(null);
   const [form, setForm] = useState({
     nombre: "",
@@ -13,6 +16,19 @@ function EditarSala() {
     capacidad: ""
   });
   const [mensaje, setMensaje] = useState("");
+
+  // 🔹 Obtener facultades
+  useEffect(() => {
+    const fetchFacultades = async () => {
+      try {
+        const data = await getFacultades();
+        setFacultades(data);
+      } catch (err) {
+        console.error("Error cargando facultades", err);
+      }
+    };
+    fetchFacultades();
+  }, []);
 
   // 🔹 Obtener salas
   const obtenerSalas = async () => {
@@ -42,16 +58,22 @@ function EditarSala() {
       return;
     }
 
+    if (!idFacultad) {
+      setMensaje("Selecciona una facultad");
+      return;
+    }
+
     try {
       const res = await fetch(
-          `http://localhost:3001/api/salas/${salaSeleccionada.id}/datos`,
+        `http://localhost:3001/api/salas/${salaSeleccionada.id}/datos`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             nombre: form.nombre,
             ubicacion: form.ubicacion,
-            capacidad: Number(form.capacidad)
+            capacidad: Number(form.capacidad),
+            facultad_id: Number(idFacultad) // 🔥 agregado
           })
         }
       );
@@ -61,16 +83,15 @@ function EditarSala() {
       if (res.ok) {
         setMensaje("Sala editada exitosamente ✅");
 
-        // 🔥 refrescar lista
         await obtenerSalas();
 
-        // 🔥 limpiar selección
         setSalaSeleccionada(null);
         setForm({
           nombre: "",
           ubicacion: "",
           capacidad: ""
         });
+        setIdFacultad(""); // 🔥 limpiar
 
       } else {
         setMensaje(data.error || "Error al editar");
@@ -127,6 +148,21 @@ function EditarSala() {
             />
           </div>
 
+          <div className="formGroup">
+            <label>Facultad:</label>
+            <select
+              value={idFacultad}
+              onChange={(e) => setIdFacultad(e.target.value)}
+            >
+              <option value="">Selecciona una facultad</option>
+              {facultades.map((fac) => (
+                <option key={fac.id} value={fac.id}>
+                  {fac.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <button className="editarBtn" onClick={handleEditar}>
             Editar
           </button>
@@ -152,6 +188,8 @@ function EditarSala() {
                     ubicacion: s.ubicacion,
                     capacidad: s.capacidad
                   });
+
+                  setIdFacultad(s.facultad_id); // 🔥 cargar facultad
                   setMensaje("");
                 }}
               >
@@ -163,6 +201,7 @@ function EditarSala() {
                   <p><strong>ID:</strong> {s.id}</p>
                   <p><strong>Ubicación:</strong> {s.ubicacion}</p>
                   <p><strong>Capacidad:</strong> {s.capacidad}</p>
+                  <p><strong>Facultad:</strong> {s.facultad_id}</p> {/* opcional */}
                 </div>
 
                 <span className={`estado ${s.estado}`}>
@@ -175,10 +214,7 @@ function EditarSala() {
 
       </div>
 
-      {/* FOOTER */}
-      <div className="footer">
-        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
-      </div>
+      <FooterRojo />
     </div>
   );
 }

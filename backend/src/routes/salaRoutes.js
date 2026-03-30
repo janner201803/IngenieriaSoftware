@@ -3,7 +3,7 @@ const router = express.Router();
 const { param, validationResult } = require('express-validator');
 const salaController = require('../controllers/salaController');
 
-// 🔥 middleware validación
+// 🔥 Middleware de validación
 const validar = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -19,29 +19,33 @@ router.post('/', salaController.crear);
 router.get('/', salaController.listar);
 
 // 🔹 OBTENER POR ID
-router.get('/:id',
-  param('id').isString().notEmpty(),
+router.get(
+  '/:id',
+  param('id').isString().notEmpty().withMessage('ID inválido'),
   validar,
   salaController.obtenerPorId
 );
 
-// ✅ PRIMERO LAS RUTAS ESPECÍFICAS
-router.put('/:id/datos',
-  param('id').isString().notEmpty(),
+// 🔹 ACTUALIZAR DATOS (IMPORTANTE: antes del general)
+router.put(
+  '/:id/datos',
+  param('id').isString().notEmpty().withMessage('ID inválido'),
   validar,
   salaController.actualizarDatos
 );
 
-// 🔹 LUEGO LAS GENERALES
-router.put('/:id',
-  param('id').isString().notEmpty(),
+// 🔹 ACTUALIZAR ESTADO (GENERAL)
+router.put(
+  '/:id',
+  param('id').isString().notEmpty().withMessage('ID inválido'),
   validar,
   salaController.actualizar
 );
 
 // 🔹 ELIMINAR
-router.delete('/:id',
-  param('id').isString().notEmpty(),
+router.delete(
+  '/:id',
+  param('id').isString().notEmpty().withMessage('ID inválido'),
   validar,
   salaController.eliminar
 );

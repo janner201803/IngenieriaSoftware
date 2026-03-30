@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import devolver from '../assets/images/devolver.png';
 import { useState, useEffect } from "react";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/crearSala.css";
+import { getFacultades } from '../services/api';
+import FooterRojo from "../components/FooterRojo";
 
 function CrearSala() {
 
@@ -14,10 +14,11 @@ function CrearSala() {
     estado: "disponible"
   });
 
-  // 🔥 NUEVO: estado para lista de salas
   const [salas, setSalas] = useState([]);
+  const [facultades, setFacultades] = useState([]);
+  const [idFacultad, setIdFacultad] = useState("");
 
-  // 🔥 NUEVO: función para obtener salas
+  // 🔥 OBTENER SALAS
   const obtenerSalas = async () => {
     try {
       const response = await fetch("http://localhost:3001/api/salas");
@@ -28,12 +29,32 @@ function CrearSala() {
     }
   };
 
-  // 🔥 NUEVO: cargar al inicio
+  // 🔥 OBTENER FACULTADES
+  useEffect(() => {
+    const fetchFacultades = async () => {
+      try {
+        const data = await getFacultades();
+        setFacultades(data);
+      } catch (err) {
+        console.error("Error cargando facultades", err);
+      }
+    };
+    fetchFacultades();
+  }, []);
+
+  // 🔥 CARGAR SALAS
   useEffect(() => {
     obtenerSalas();
   }, []);
 
+  // 🔥 CREAR SALA
   const crearSala = async () => {
+
+    if (!sala.id || !sala.nombre || !sala.ubicacion || !sala.capacidad || !idFacultad) {
+      alert("Todos los campos son obligatorios");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/api/salas", {
         method: "POST",
@@ -41,11 +62,12 @@ function CrearSala() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id:(sala.id),
+          id: sala.id,
           nombre: sala.nombre,
           ubicacion: sala.ubicacion,
           capacidad: Number(sala.capacidad),
-          estado: sala.estado.toLowerCase()
+          estado: sala.estado.toLowerCase(),
+          facultad_id: Number(idFacultad) // 🔥 FIX FINAL
         })
       });
 
@@ -58,10 +80,9 @@ function CrearSala() {
 
       alert("Sala creada correctamente ✅");
 
-      // 🔥 NUEVO: actualizar lista
       await obtenerSalas();
 
-      // Limpiar formulario
+      // 🔥 LIMPIAR FORMULARIO
       setSala({
         id: "",
         nombre: "",
@@ -69,6 +90,8 @@ function CrearSala() {
         capacidad: "",
         estado: "disponible"
       });
+
+      setIdFacultad("");
 
     } catch (error) {
       console.error(error);
@@ -80,7 +103,6 @@ function CrearSala() {
     <div className="container">
       <NavbarGestionSalas />
 
-      {/* CONTENIDO */}
       <div className="content">
 
         {/* IZQUIERDA */}
@@ -134,6 +156,22 @@ function CrearSala() {
             </select>
           </div>
 
+          {/* 🔥 FACULTAD */}
+          <div className="formGroup">
+            <label>Facultad:</label>
+            <select
+              value={idFacultad}
+              onChange={(e) => setIdFacultad(e.target.value)}
+            >
+              <option value="">Selecciona una facultad</option>
+              {facultades.map((fac) => (
+                <option key={fac.id} value={fac.id}>
+                  {fac.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <button className="crearBtn" onClick={crearSala}>
             Crear
           </button>
@@ -149,7 +187,7 @@ function CrearSala() {
           ) : (
             salas.map((s) => (
               <div key={s.id} className="formGroup salaCard">
-  
+
                 <div className="salaHeader">
                   <h3 className="salaTitulo">{s.nombre}</h3>
                 </div>
@@ -158,10 +196,11 @@ function CrearSala() {
                   <p><strong>ID:</strong> {s.id}</p>
                   <p><strong>Ubicación:</strong> {s.ubicacion}</p>
                   <p><strong>Capacidad:</strong> {s.capacidad}</p>
+                  <p><strong>Facultad:</strong> {s.facultad_id}</p>
                 </div>
 
                 <span className={`estado ${s.estado}`}>
-                    {s.estado}
+                  {s.estado}
                 </span>
 
               </div>
@@ -172,10 +211,7 @@ function CrearSala() {
 
       </div>
 
-      {/* FOOTER */}
-      <div className="footer">
-        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
-      </div>
+      <FooterRojo />
     </div>
   );
 }

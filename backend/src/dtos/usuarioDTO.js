@@ -8,15 +8,10 @@ class UsuarioDTO {
     this.rol = usuario.rol;
     this.idFacultad = usuario.idFacultad;
 
-    if (usuario.facultad) {
-      this.facultad = {
-        id: usuario.facultad.id,
-        nombre: usuario.facultad.nombre
-      };
-    }
+    // 🔥 CORRECTO (Sequelize usa "Facultad" con mayúscula)
+    this.facultad_nombre = usuario.Facultad?.nombre || null;
   }
 
-  // 🔥 VALIDAR REGISTRO
   static validarCrear(data) {
     const errors = [];
 
@@ -35,7 +30,6 @@ class UsuarioDTO {
     return errors;
   }
 
-  // 🔥 VALIDAR LOGIN
   static validarLogin(data) {
     const errors = [];
 

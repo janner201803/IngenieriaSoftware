@@ -10,12 +10,15 @@ class AuthController {
 
       const result = await authService.login(correo, contraseña);
 
-      // 🔥 GUARDAR EN SESIÓN
-      req.session.user = result.usuario;
+      // 🔥 FORMATEAR CON DTO
+      const userDTO = new UsuarioDTO(result.usuario);
+
+      // 🔥 GUARDAR EL DTO EN SESIÓN
+      req.session.user = userDTO;
 
       res.json({
         message: 'Login exitoso',
-        user: new UsuarioDTO(result.usuario)
+        user: userDTO
       });
 
     } catch (error) {
@@ -34,9 +37,11 @@ class AuthController {
         idFacultad
       });
 
+      const userDTO = new UsuarioDTO(usuario);
+
       res.status(201).json({
         message: 'Usuario registrado',
-        user: new UsuarioDTO(usuario)
+        user: userDTO
       });
 
     } catch (error) {
@@ -44,7 +49,7 @@ class AuthController {
     }
   }
 
-  // 🔹 LOGOUT (🔥 IMPORTANTE)
+  // 🔹 LOGOUT
   async logout(req, res, next) {
     try {
       req.session.destroy(() => {
@@ -55,14 +60,14 @@ class AuthController {
     }
   }
 
-  // 🔹 OBTENER USUARIO LOGUEADO (🔥 CLAVE PARA FRONT)
+  // 🔹 OBTENER USUARIO LOGUEADO
   async me(req, res) {
     if (!req.session.user) {
       return res.status(401).json({ error: 'No autenticado' });
     }
 
     res.json({
-      user: req.session.user
+      user: req.session.user // 🔥 ya viene con facultad_nombre
     });
   }
 }

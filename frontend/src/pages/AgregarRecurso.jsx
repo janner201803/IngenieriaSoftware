@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/AgregarRecurso.css";
-import devolver from '../assets/images/devolver.png';
+import FooterRojo from "../components/FooterRojo";
 
 function AgregarRecurso() {
   return (
@@ -22,12 +21,11 @@ function AgregarRecurso() {
         </div>
 
       </div>
-
-      {/* FOOTER */}
-      <div className="footer">
+      
+      <FooterRojo>
         <button className="AgregarBtn">Agregar</button>
-        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
-      </div>
+      </FooterRojo>
+        
     </div>
   );
 }

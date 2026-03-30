@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/EliminarRecurso.css";
-import devolver from '../assets/images/devolver.png';
+import FooterRojo from "../components/FooterRojo";
 
 function EliminarRecurso() {
   return (
@@ -23,11 +22,10 @@ function EliminarRecurso() {
 
       </div>
 
-      {/* FOOTER */}
-      <div className="footer">
-        <button className="EliminarBtn">Eliminar</button>
-        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
-      </div>
+      <FooterRojo>
+      <button className="EliminarBtn">Eliminar</button>
+      </FooterRojo>  
+      
     </div>
     );
 }

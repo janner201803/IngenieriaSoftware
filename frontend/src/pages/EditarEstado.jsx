@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
-import devolver from '../assets/images/devolver.png';
 import { useEffect, useState } from "react";
 import NavbarGestionSalas from "../components/NavbarGestionSalas";
 import "../styles/EditarEstado.css";
 import axios from "axios";
+import FooterRojo from "../components/FooterRojo";
 
 function EditarEstado() {
   const [salas, setSalas] = useState([]);
@@ -98,7 +97,7 @@ function EditarEstado() {
                 className={`salaItem ${salaSeleccionada?.id === sala.id ? "active" : ""}`}
                 onClick={() => seleccionarSala(sala)}
               >
-                <p><strong>Sala N° {sala.id}</strong></p>
+                <p><strong>{sala.id}</strong></p>
                 <p>{sala.nombre}</p>
                 <span className={`estado ${sala.estado}`}>
                   {sala.estado}
@@ -111,10 +110,7 @@ function EditarEstado() {
 
       </div>
 
-      {/* FOOTER */}
-      <div className="footer">
-        <Link to="/inicio/GSInicio"> <img src={devolver} alt="devolver" className="devolver" /></Link>
-      </div>
+      <FooterRojo />
     </div>
   );
 }
