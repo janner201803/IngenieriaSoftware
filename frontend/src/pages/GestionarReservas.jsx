@@ -26,7 +26,7 @@ function GestionarReservas() {
 
     const fetchReservasDelDia = async () => {
       try {
-        const fechaStr = selectedDate.toISOString().split('T')[0]; // YYYY-MM-DD
+        const fechaStr = selectedDate.toLocaleDateString('en-CA'); // ✅ FIX
         const res = await axios.get(`http://localhost:3001/api/reservas?fecha=${fechaStr}`);
         setReservasDelDia(res.data);
       } catch (error) {

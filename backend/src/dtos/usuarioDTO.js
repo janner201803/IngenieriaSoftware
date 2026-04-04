@@ -21,6 +21,15 @@ class UsuarioDTO {
 
     if (!data.contraseña || data.contraseña.trim() === '') {
       errors.push('La contraseña es obligatoria');
+    } else {
+      // 🔥 VALIDACIÓN FUERTE
+      const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,}$/;
+
+      if (!passwordRegex.test(data.contraseña)) {
+        errors.push(
+          'La contraseña debe tener mínimo 8 caracteres, una mayúscula, un número y un carácter especial'
+        );
+      }
     }
 
     if (!data.idFacultad) {

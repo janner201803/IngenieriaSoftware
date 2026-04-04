@@ -49,11 +49,31 @@ exports.crear = async (req, res, next) => {
   }
 };
 
-// 🔹 LISTAR TODAS LAS RESERVAS
+// 🔹 LISTAR (CON FILTRO POR FECHA)
 exports.listar = async (req, res, next) => {
   try {
+    const { fecha } = req.query;
+
+    // 🔥 SI ENVÍAN FECHA → filtrar
+    if (fecha) {
+      const inicioDia = new Date(fecha + "T00:00:00");
+      const finDia = new Date(fecha + "T23:59:59");
+
+      const reservas = await Reserva.findAll({
+        where: {
+          fechaInicio: { [Op.lte]: finDia },
+          fechaFin: { [Op.gte]: inicioDia }
+        },
+        order: [['fechaInicio', 'ASC']]
+      });
+
+      return res.json(reservas.map(r => new ReservaDTO(r)));
+    }
+
+    // 🔥 SI NO ENVÍAN FECHA → listar todas
     const reservas = await reservaService.listar();
     res.json(reservas.map(r => new ReservaDTO(r)));
+
   } catch (error) {
     next(error);
   }
@@ -89,30 +109,6 @@ exports.eliminar = async (req, res, next) => {
   try {
     const resultado = await reservaService.eliminar(req.params.id);
     res.json(resultado);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// 🔹 LISTAR RESERVAS POR FECHA (para el calendario)
-// GET /api/reservas?fecha=YYYY-MM-DD
-exports.listarPorFecha = async (req, res, next) => {
-  try {
-    const { fecha } = req.query;
-    if (!fecha) return res.status(400).json({ error: "Debes enviar la fecha" });
-
-    const inicioDia = new Date(fecha + "T00:00:00");
-    const finDia = new Date(fecha + "T23:59:59");
-
-    const reservas = await Reserva.findAll({
-      where: {
-        fechaInicio: { [Op.lte]: finDia }, // empieza antes o durante el día
-        fechaFin: { [Op.gte]: inicioDia }  // termina después o durante el día
-      },
-      order: [['fechaInicio', 'ASC']]
-    });
-
-    res.json(reservas.map(r => new ReservaDTO(r)));
   } catch (error) {
     next(error);
   }

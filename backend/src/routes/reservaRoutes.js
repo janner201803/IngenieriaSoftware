@@ -14,7 +14,7 @@ const validar = (req, res, next) => {
 // 🔹 CREAR
 router.post('/', reservaController.crear);
 
-// 🔹 LISTAR
+// 🔹 LISTAR (MANEJA TODO: con o sin fecha)
 router.get('/', reservaController.listar);
 
 // 🔹 OBTENER POR ID
@@ -23,8 +23,6 @@ router.get('/:id',
   validar,
   reservaController.obtenerPorId
 );
-
-router.get('/', reservaController.listarPorFecha); // este va antes de listarTodas si lo haces por query
 
 // 🔹 ACTUALIZAR
 router.put('/:id',

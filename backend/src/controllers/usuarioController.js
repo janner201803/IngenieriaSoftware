@@ -1,6 +1,7 @@
 const usuarioService = require('../service/usuarioService');
 const UsuarioDTO = require('../dtos/usuarioDTO');
 
+// 🔹 LISTAR
 exports.listar = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -18,6 +19,7 @@ exports.listar = async (req, res, next) => {
   }
 };
 
+// 🔹 OBTENER POR ID
 exports.obtenerPorId = async (req, res, next) => {
   try {
     const usuario = await usuarioService.obtenerPorId(req.params.id);
@@ -27,15 +29,44 @@ exports.obtenerPorId = async (req, res, next) => {
   }
 };
 
-exports.actualizar = async (req, res, next) => {
+// 🔥 CREAR USUARIO (CON VALIDACIÓN)
+exports.crear = async (req, res, next) => {
   try {
-    const usuario = await usuarioService.actualizar(req.params.id, req.body);
+    const errores = UsuarioDTO.validarCrear(req.body);
+
+    if (errores.length > 0) {
+      return res.status(400).json({ errores });
+    }
+
+    const usuario = await usuarioService.crear(req.body);
+
     res.json(new UsuarioDTO(usuario.toJSON()));
+
   } catch (error) {
     next(error);
   }
 };
 
+// 🔥 ACTUALIZAR (VALIDA SOLO SI CAMBIA CONTRASEÑA)
+exports.actualizar = async (req, res, next) => {
+  try {
+    if (req.body.contraseña) {
+      const errores = UsuarioDTO.validarCrear(req.body);
+
+      if (errores.length > 0) {
+        return res.status(400).json({ errores });
+      }
+    }
+
+    const usuario = await usuarioService.actualizar(req.params.id, req.body);
+    res.json(new UsuarioDTO(usuario.toJSON()));
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+// 🔹 ELIMINAR
 exports.eliminar = async (req, res, next) => {
   try {
     const resultado = await usuarioService.eliminar(req.params.id);
