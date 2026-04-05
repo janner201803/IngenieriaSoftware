@@ -4,91 +4,58 @@ import * as api from '../services/api';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // 🔹 VERIFICAR SESIÓN AL RECARGAR
   useEffect(() => {
-    const checkSession = async () => {
+    const stored = localStorage.getItem('user');
+    if (stored) {
       try {
-        const data = await api.getSession(); // 🔥 endpoint /auth/session
-        if (data.user) {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        setUser(null);
+        setUser(JSON.parse(stored));
+      } catch (e) {
+        localStorage.removeItem('user');
       }
-    };
-
-    checkSession();
+    }
+    setLoading(false);
   }, []);
 
-  // 🔹 LOGIN
   const login = async (correo, contraseña) => {
-    setLoading(true);
     try {
       const data = await api.login(correo, contraseña);
-
-      // 🔥 guardar usuario en estado
-      setUser(data.user);
-
-      return { success: true, user: data.user };
-
+      if (data?.user) {
+        setUser(data.user);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        return { success: true, user: data.user };
+      }
+      return { success: false, error: 'Respuesta inválida' };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.message || 'Error al iniciar sesión'
-      };
-    } finally {
-      setLoading(false);
+      return { success: false, error: error.message };
     }
   };
 
-  // 🔹 REGISTER
   const register = async (correo, contraseña, idFacultad) => {
-    setLoading(true);
     try {
       const data = await api.register(correo, contraseña, idFacultad);
-
-      return { success: true, user: data.user };
-
+      if (data?.user) {
+        return { success: true, user: data.user };
+      }
+      return { success: false, error: 'Respuesta inválida' };
     } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.message || 'Error al registrar'
-      };
-    } finally {
-      setLoading(false);
+      return { success: false, error: error.message };
     }
   };
 
-  // 🔹 LOGOUT
-  const logout = async () => {
-    try {
-      await api.logout(); // 🔥 endpoint /auth/logout
-      setUser(null);
-    } catch (error) {
-      console.error('Error cerrando sesión', error);
-    }
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('user');
+    api.logout().catch(console.error);
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        register,
-        logout,
-        loading
-      }}
-    >
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// 🔹 Hook personalizado
 export const useAuth = () => useContext(AuthContext);
