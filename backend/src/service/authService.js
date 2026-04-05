@@ -2,7 +2,19 @@ const { Usuario, Facultad, ListaBlanca } = require('../models');
 
 class AuthService {
 
+  // 🔧 Función auxiliar para validar la contraseña
+  isValidPassword(password) {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasSymbol = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+    return password.length >= minLength && hasUpperCase && hasSymbol;
+  }
   async register({ correo, contraseña, idFacultad }) {
+
+    // 🔥 Validar contraseña antes de cualquier otra comprobación
+    if (!this.isValidPassword(contraseña)) {
+      throw new Error('La contraseña debe tener al menos 8 caracteres, una mayúscula y un símbolo');
+    }
 
     const facultad = await Facultad.findByPk(idFacultad);
     if (!facultad) {
@@ -22,8 +34,14 @@ class AuthService {
       correo,
       contraseña,
       rol,
-      idFacultad // ✅ consistente
+      idFacultad
     });
+
+
+ // Validar dominio del correo
+  if (!correo.endsWith('@uao.edu.co')) {
+    throw new Error('Solo se permiten correos institucionales (@uao.edu.co)');
+  }
 
     // 🔥 incluir facultad
     const usuarioConFacultad = await Usuario.findByPk(nuevoUsuario.id, {

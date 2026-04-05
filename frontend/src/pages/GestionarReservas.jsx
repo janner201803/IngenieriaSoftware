@@ -187,10 +187,12 @@ function GestionarReservas() {
                 ) : (
                   <ul className="reservasList">
                     {reservasDelDia.map((reserva) => (
-                      <li key={reserva.id}>
-                        Sala: <strong>{reserva.idSala}</strong> | 
-                        {new Date(reserva.fechaInicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
-                        {new Date(reserva.fechaFin).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                     <li key={reserva.id}>
+                        <span><strong> {reserva.idSala}</strong></span>
+                        <span>
+                          {new Date(reserva.fechaInicio).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -  
+                          {new Date(reserva.fechaFin).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
                       </li>
                     ))}
                   </ul>

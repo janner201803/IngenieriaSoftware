@@ -42,9 +42,7 @@ function NavbarGestionSalas() {
   return (
     <nav className="navbarGestion">
       <div className="navbarLogoGestion">
-        <Link to="/">
           <img src={logo} alt="logo" className="logoGestion" />
-        </Link>
       </div>
 
       <div className="navbarRightGestion">
